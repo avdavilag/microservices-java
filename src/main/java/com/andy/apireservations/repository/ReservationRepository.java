@@ -6,10 +6,13 @@ import com.andy.apireservations.model.Price;
 import com.andy.apireservations.model.Segment;
 import com.andy.apireservations.model.Itinerary;
 
+import java.lang.StackWalker.Option;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 public class ReservationRepository {
     static List<Reservation> reservations = new ArrayList<>();
     static {
@@ -48,5 +51,27 @@ public class ReservationRepository {
         reservations.add(reservation);
     }
 
+
+    public List<Reservation> getReservations() {   return reservations; }
+    
+    public Optional<Reservation> getReservationById(Long id) {
+        List<Reservation> result= reservations.stream().
+        filter(reservation -> Objects.equals(reservation.getId(), id)).toList();
+
+        Reservation reservation= !result.isEmpty() ? result.get(0) : null;
+        return Optional.ofNullable(reservation);
+    }
+
+    public Reservation save(Reservation reservation) {
+        reservation.setId((long) (reservations.size() + 1));
+        reservations.add(reservation);
+        return reservation;
+    }
+
+    public void delete(Long id) {
+        List<Reservation> result= reservations.stream()
+        .filter(reservation -> !Objects.equals(reservation.getId(), id)).toList();
+        reservations.remove(result.get(0));
+    }   
 
 }
