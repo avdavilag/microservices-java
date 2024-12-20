@@ -6,13 +6,6 @@ public class Itinerary {
     private List<Segment> Segment;
      private Price price;
 
-    public Itinerary() {}
-
-    public Itinerary(Long id, List<com.andy.apireservations.model.Segment> segment, Price price) {
-        this.id = id;
-        Segment = segment;
-        this.price = price;
-    }
 
     public Long getId() {
         return id;

@@ -1,9 +1,13 @@
 package com.andy.apireservations.DTO;
+
 import java.math.BigDecimal;
+
 public class PriceDTO {
     private BigDecimal totalPrice;
-    private BigDecimal totalPax;
-    private BigDecimal basePric;
+
+    private BigDecimal totalTax;
+
+    private BigDecimal basePrice;
 
     public BigDecimal getTotalPrice() {
         return totalPrice;
@@ -13,19 +17,19 @@ public class PriceDTO {
         this.totalPrice = totalPrice;
     }
 
-    public BigDecimal getTotalPax() {
-        return totalPax;
+    public BigDecimal getTotalTax() {
+        return totalTax;
     }
 
-    public void setTotalPax(BigDecimal totalPax) {
-        this.totalPax = totalPax;
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
     }
 
-    public BigDecimal getBasePric() {
-        return basePric;
+    public BigDecimal getBasePrice() {
+        return basePrice;
     }
 
-    public void setBasePric(BigDecimal basePric) {
-        this.basePric = basePric;
+    public void setBasePrice(BigDecimal basePrice) {
+        this.basePrice = basePrice;
     }
 }

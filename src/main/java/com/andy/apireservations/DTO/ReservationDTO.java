@@ -4,9 +4,25 @@ import java.util.List;
 
 public class ReservationDTO {
     private Long id;
-    private List<PassangerDTO>passagers;
-    private ItenaryDTO itenary;
+    private List<PassengerDTO> passengers;
 
+    private ItineraryDTO itinerary;
+
+    public List<PassengerDTO> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<PassengerDTO> passengers) {
+        this.passengers = passengers;
+    }
+
+    public ItineraryDTO getItinerary() {
+        return itinerary;
+    }
+
+    public void setItinerary(ItineraryDTO itinerary) {
+        this.itinerary = itinerary;
+    }
 
     public Long getId() {
         return id;
@@ -14,21 +30,5 @@ public class ReservationDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<PassangerDTO> getPassagers() {
-        return passagers;
-    }
-
-    public void setPassagers(List<PassangerDTO> passagers) {
-        this.passagers = passagers;
-    }
-
-    public ItenaryDTO getItenary() {
-        return itenary;
-    }
-
-    public void setItenary(ItenaryDTO itenary) {
-        this.itenary = itenary;
     }
 }

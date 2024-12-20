@@ -10,17 +10,7 @@ public class Segment {
     private  String carrier;
     private Long  id;
 
-    public Segment() {
-    }
 
-    public Segment(String origin, String destination, String departure, String arrival, String carrier, Long id) {
-        this.origin = origin;
-        this.destination = destination;
-        this.departure = departure;
-        this.arrival = arrival;
-        this.carrier = carrier;
-        this.id = id;
-    }
 
     public String getOrigin() {
         return origin;

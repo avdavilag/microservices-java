@@ -1,5 +1,7 @@
 package com.andy.apireservations.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
@@ -12,35 +14,55 @@ import com.andy.apireservations.repository.ReservationRepository;
 
 @Service
 public class ReservationService {
-    
-private ReservationRepository repository;
 
-public List<ReservationDTO> getReservations() {
-    
-}
+    private ReservationRepository repository;
 
-public List<ReservationDTO> getReservationsById(Long id) {
-    Optional<Reservation> result=repository.getReservationById(id);
-    if(result.isEmpty()){
-        throw new AndyException("Reservation not found");
-    }
-}
+    private ConversionService conversionService;
 
-public List<ReservationDTO> save(ReservationDTO reservation) {
-    
-    if(Objects.nonNull(reservation.getId())){
-        throw new AndyException("Duplicated It");
+    @Autowired
+    public ReservationService(ReservationRepository repository,
+            ConversionService conversionService) {
+        this.repository = repository;
+        this.conversionService = conversionService;
     }
-}
-public List<ReservationDTO> update(Long id, ReservationDTO reservation) {
-    if(getReservationsById(id)==null){
-        throw new AndyException("Not exist");
+
+    public List<ReservationDTO> getReservations() {
+        return conversionService.convert(repository.getReservations(), List.class);
     }
-}
-public void delete(Long id) {
-    if(getReservationsById(id)==null){
-        throw new AndyException("Not exist");
+
+    public ReservationDTO getReservationById(Long id) {
+        Optional<Reservation> result = repository.getReservationById(id);
+        if (result.isEmpty()) {
+            throw new AndyException("Not exist");
+        }
+        return conversionService.convert(result.get(), ReservationDTO.class);
     }
+
+    public ReservationDTO save(ReservationDTO reservation) {
+        if (Objects.nonNull(reservation.getId())) {
+            throw new AndyException("Duplicate it");
+        }
+
+        Reservation transformed = conversionService.convert(reservation, Reservation.class);
+        Reservation result = repository.save(Objects.requireNonNull(transformed));
+        return conversionService.convert(result, ReservationDTO.class);
+    }
+
+    public ReservationDTO update(Long id, ReservationDTO reservation) {
+        if (getReservationById(id) == null) {
+            throw new AndyException("Not exist");
+        }
+
+        Reservation transformed = conversionService.convert(reservation, Reservation.class);
+        Reservation result = repository.update(id, Objects.requireNonNull(transformed));
+        return conversionService.convert(result, ReservationDTO.class);
+    }
+
+    public void delete(Long id) {
+        if (getReservationById(id) == null) {
+            throw new AndyException("Not exist");
+        }
+
         repository.delete(id);
-}
+    }
 }

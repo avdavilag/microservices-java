@@ -5,6 +5,7 @@ import com.andy.apireservations.model.Passenger;
 import com.andy.apireservations.model.Price;
 import com.andy.apireservations.model.Segment;
 import com.andy.apireservations.model.Itinerary;
+import org.springframework.stereotype.Component;
 
 import java.lang.StackWalker.Option;
 import java.math.BigDecimal;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+@Component
 public class ReservationRepository {
     static List<Reservation> reservations = new ArrayList<>();
     static {
@@ -27,7 +30,7 @@ public class ReservationRepository {
 
         Price price = new Price();
         price.setBasePrice(BigDecimal.ONE);
-        price.setTotalPax(BigDecimal.ZERO);
+        price.setTotalTax(BigDecimal.ZERO);
         price.setTotalPrice(BigDecimal.ONE);
 
         Segment segment = new Segment();
@@ -51,14 +54,16 @@ public class ReservationRepository {
         reservations.add(reservation);
     }
 
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
 
-    public List<Reservation> getReservations() {   return reservations; }
-    
     public Optional<Reservation> getReservationById(Long id) {
-        List<Reservation> result= reservations.stream().
-        filter(reservation -> Objects.equals(reservation.getId(), id)).toList();
+        List<Reservation> result = reservations.stream()
+                .filter(reservation -> Objects.equals(reservation.getId(), id))
+                .toList();
 
-        Reservation reservation= !result.isEmpty() ? result.get(0) : null;
+        Reservation reservation = !result.isEmpty() ? result.get(0) : null;
         return Optional.ofNullable(reservation);
     }
 
@@ -68,10 +73,21 @@ public class ReservationRepository {
         return reservation;
     }
 
-    public void delete(Long id) {
-        List<Reservation> result= reservations.stream()
-        .filter(reservation -> !Objects.equals(reservation.getId(), id)).toList();
-        reservations.remove(result.get(0));
-    }   
+    public Reservation update(Long id, Reservation reservation) {
+        List<Reservation> result = reservations.stream()
+                .filter(reser -> reser.getId().equals(id))
+                .toList();
+        result.get(0).setId(reservation.getId());
+        result.get(0).setItinerary(reservation.getItinerary());
+        result.get(0).setPassengers(reservation.getPassengers());
 
+        return result.get(0);
+    }
+
+    public void delete(Long id) {
+        List<Reservation> result = reservations.stream()
+                .filter(reservation -> !Objects.equals(reservation.getId(), id)).toList();
+        reservations.remove(result.get(0));
+
+    }
 }

@@ -12,19 +12,6 @@ public class Passenger {
     private String DocumentNumber;
     private LocalDate birthday;
 
-    public Passenger() {
-    }
-
-
-    public Passenger(Long id, String firstName, String lastName, String documentType, String documentNumber, LocalDate birthday) {
-        this.id = id;
-        FirstName = firstName;
-        this.lastName = lastName;
-        this.documentType = documentType;
-        DocumentNumber = documentNumber;
-        this.birthday = birthday;
-    }
-
     public Long getId() {
         return id;
     }

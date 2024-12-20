@@ -1,19 +1,14 @@
 package com.andy.apireservations.model;
+
 import java.math.BigDecimal;
 
 public class Price {
+    private Long id;
     private BigDecimal totalPrice;
-    private BigDecimal totalPax;
+
+    private BigDecimal totalTax;
+
     private BigDecimal basePrice;
-
-
-    public Price() {
-    }
-    public Price(BigDecimal totalPrice, BigDecimal totalPax, BigDecimal basePrice) {
-        this.totalPrice = totalPrice;
-        this.totalPax = totalPax;
-        this.basePrice = basePrice;
-    }
 
     public BigDecimal getTotalPrice() {
         return totalPrice;
@@ -23,12 +18,12 @@ public class Price {
         this.totalPrice = totalPrice;
     }
 
-    public BigDecimal getTotalPax() {
-        return totalPax;
+    public BigDecimal getTotalTax() {
+        return totalTax;
     }
 
-    public void setTotalPax(BigDecimal totalPax) {
-        this.totalPax = totalPax;
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
     }
 
     public BigDecimal getBasePrice() {
@@ -37,5 +32,13 @@ public class Price {
 
     public void setBasePrice(BigDecimal basePrice) {
         this.basePrice = basePrice;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
