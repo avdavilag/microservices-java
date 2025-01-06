@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.andy.apireservations.DTO.ReservationDTO;
+import com.andy.apireservations.enums.APIError;
 import com.andy.apireservations.exception.AndyException;
 import com.andy.apireservations.model.Reservation;
 import com.andy.apireservations.repository.ReservationRepository;
@@ -33,14 +34,15 @@ public class ReservationService {
     public ReservationDTO getReservationById(Long id) {
         Optional<Reservation> result = repository.getReservationById(id);
         if (result.isEmpty()) {
-            throw new AndyException("Not exist");
+            throw new AndyException(APIError.RESERVATION_NOT_FOUND);
         }
         return conversionService.convert(result.get(), ReservationDTO.class);
     }
 
     public ReservationDTO save(ReservationDTO reservation) {
         if (Objects.nonNull(reservation.getId())) {
-            throw new AndyException("Duplicate it");
+
+            throw new AndyException(APIError.RESERVATION_WITH_SAVE_ID);
         }
 
         Reservation transformed = conversionService.convert(reservation, Reservation.class);
@@ -50,7 +52,7 @@ public class ReservationService {
 
     public ReservationDTO update(Long id, ReservationDTO reservation) {
         if (getReservationById(id) == null) {
-            throw new AndyException("Not exist");
+            throw new AndyException(APIError.RESERVATION_NOT_FOUND);
         }
 
         Reservation transformed = conversionService.convert(reservation, Reservation.class);
@@ -60,7 +62,7 @@ public class ReservationService {
 
     public void delete(Long id) {
         if (getReservationById(id) == null) {
-            throw new AndyException("Not exist");
+            throw new AndyException(APIError.RESERVATION_NOT_FOUND);
         }
 
         repository.delete(id);

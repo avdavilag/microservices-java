@@ -2,10 +2,17 @@ package com.andy.apireservations.DTO;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
 public class ReservationDTO {
     private Long id;
+
+    @Valid
+    @NotEmpty(message = "You need  at lasted one passager")
     private List<PassengerDTO> passengers;
 
+    @Valid
     private ItineraryDTO itinerary;
 
     public List<PassengerDTO> getPassengers() {

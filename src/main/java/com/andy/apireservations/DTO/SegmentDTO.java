@@ -1,11 +1,17 @@
 package com.andy.apireservations.DTO;
 
-public class SegmentDTO {
-    private String origin;
-    private  String destination;
+import com.andy.apireservations.validation.CityFormatConstraint;
 
-    private  String departure;
-    private  String arrival;
+public class SegmentDTO {
+
+    @CityFormatConstraint
+    private String origin;
+
+    @CityFormatConstraint
+    private String destination;
+
+    private String departure;
+    private String arrival;
 
     public SegmentDTO(String origin, String destination, String departure, String arrival) {
         this.origin = origin;
@@ -15,7 +21,7 @@ public class SegmentDTO {
     }
 
     // Getters
-// Getters
+    // Getters
     public String getOrigin() {
         return origin;
     }

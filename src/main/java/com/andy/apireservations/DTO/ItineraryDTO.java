@@ -1,9 +1,12 @@
 package com.andy.apireservations.DTO;
 
-
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 public class ItineraryDTO {
+
+    @Valid
     private List<SegmentDTO> segment;
 
     private PriceDTO price;
@@ -24,6 +27,3 @@ public class ItineraryDTO {
         this.price = price;
     }
 }
-
-
-

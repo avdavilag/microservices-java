@@ -86,7 +86,9 @@ public class ReservationRepository {
 
     public void delete(Long id) {
         List<Reservation> result = reservations.stream()
-                .filter(reservation -> !Objects.equals(reservation.getId(), id)).toList();
+                .filter(reservation -> reservation.getId().equals(id))
+                .toList();
+
         reservations.remove(result.get(0));
 
     }
