@@ -44,9 +44,17 @@ public class ReservationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // @PostMapping
+    // public ResponseEntity<ReservationDTO> save(@Valid @RequestBody ReservationDTO
+    // reservation) {
+    // // validateSave(reservation);
+    // System.out.println("Ingresando a verificar");
+    // ReservationDTO response = service.save(reservation);
+    // return new ResponseEntity<>(response, HttpStatus.CREATED);
+    // }
+
     @PostMapping
-    public ResponseEntity<ReservationDTO> save(@Valid @RequestBody ReservationDTO reservation) {
-        //validateSave(reservation);
+    public ResponseEntity<ReservationDTO> save(@RequestBody @Valid ReservationDTO reservation) {
         ReservationDTO response = service.save(reservation);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -54,7 +62,7 @@ public class ReservationController {
     @PutMapping("/{id}")
     public ResponseEntity<ReservationDTO> update(@Min(1) @PathVariable Long id,
             @Min(1) @RequestBody ReservationDTO reservation) {
-        //validateUpdate(reservation);
+        // validateUpdate(reservation);
         ReservationDTO response = service.update(id, reservation);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -66,31 +74,33 @@ public class ReservationController {
     }
 
     // private void validateSave(ReservationDTO reservation) {
-    //     if (Objects.nonNull(reservation.getId()) ||
-    //             Objects.isNull(reservation.getItinerary()) ||
-    //             Objects.isNull(reservation.getPassengers())) {
-    //         throw new AndyException("Somethings is not okey, please check the root nodes flag verifity - insert");
-    //     }
-    //     ValidatePassager(reservation.getPassengers());
+    // if (Objects.nonNull(reservation.getId()) ||
+    // Objects.isNull(reservation.getItinerary()) ||
+    // Objects.isNull(reservation.getPassengers())) {
+    // throw new AndyException("Somethings is not okey, please check the root nodes
+    // flag verifity - insert");
+    // }
+    // ValidatePassager(reservation.getPassengers());
     // }
 
     // private void validateUpdate(ReservationDTO reservation) {
-    //     if (Objects.isNull(reservation.getId()) ||
-    //             Objects.isNull(reservation.getItinerary()) ||
-    //             Objects.isNull(reservation.getPassengers())) {
-    //         throw new AndyException("Somethings is not okey, please check the root nodes flag verifity - update");
-    //     }
-    //     ValidatePassager(reservation.getPassengers());
+    // if (Objects.isNull(reservation.getId()) ||
+    // Objects.isNull(reservation.getItinerary()) ||
+    // Objects.isNull(reservation.getPassengers())) {
+    // throw new AndyException("Somethings is not okey, please check the root nodes
+    // flag verifity - update");
+    // }
+    // ValidatePassager(reservation.getPassengers());
     // }
 
     // private void ValidatePassager(List<PassengerDTO> passagers) {
-    //     for (PassengerDTO passager : passagers) {
-    //         if (Objects.isNull(passager.getFirstName())
-    //                 || passager.getFirstName().isEmpty() ||
-    //                 passager.getFirstName().length() > 30) {
-    //             throw new AndyException("The First name is very wrong");
-    //         }
-    //     }
+    // for (PassengerDTO passager : passagers) {
+    // if (Objects.isNull(passager.getFirstName())
+    // || passager.getFirstName().isEmpty() ||
+    // passager.getFirstName().length() > 30) {
+    // throw new AndyException("The First name is very wrong");
+    // }
+    // }
     // }
 
 }
