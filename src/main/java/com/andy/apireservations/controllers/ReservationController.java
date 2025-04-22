@@ -1,11 +1,14 @@
 package com.andy.apireservations.controllers;
 
 import com.andy.apireservations.DTO.ReservationDTO;
-
+import com.andy.apireservations.controllers.resources.ReservationResource;
+import com.andy.apireservations.enums.APIError;
 import com.andy.apireservations.DTO.PassengerDTO;
 import com.andy.apireservations.exception.AndyException;
 import com.andy.apireservations.service.ReservationService;
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
@@ -23,7 +26,7 @@ import java.util.Objects;
 @Validated
 @RestController
 @RequestMapping("/reservation")
-public class ReservationController {
+public class ReservationController implements ReservationResource {
 
     private ReservationService service;
 
@@ -54,6 +57,7 @@ public class ReservationController {
     // }
 
     @PostMapping
+    @RateLimiter(name = "post-reservation", fallbackMethod = "fallbackPost")
     public ResponseEntity<ReservationDTO> save(@RequestBody @Valid ReservationDTO reservation) {
         ReservationDTO response = service.save(reservation);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -71,6 +75,11 @@ public class ReservationController {
     public ResponseEntity<Void> delete(@Min(1) @PathVariable Long id) {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private ResponseEntity<ReservationDTO> fallbackPost(ReservationDTO reservation, RequestNotPermitted e) {
+        System.out.println("calling to fallbackPost");
+        throw new AndyException(APIError.EXCEED_NAMBER_REQUEST);
     }
 
     // private void validateSave(ReservationDTO reservation) {

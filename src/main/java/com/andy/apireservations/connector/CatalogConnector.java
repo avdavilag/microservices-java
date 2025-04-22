@@ -13,7 +13,11 @@ import com.andy.apireservations.connector.configuration.EndpointConfiguration;
 import com.andy.apireservations.connector.configuration.HostConfiguration;
 import com.andy.apireservations.connector.configuration.HttpConnectorConfiguration;
 import com.andy.apireservations.connector.response.CityDTO;
+import com.andy.apireservations.enums.APIError;
+import com.andy.apireservations.exception.AndyException;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -33,29 +37,23 @@ public class CatalogConnector {
                 this.configuration = configuration;
         }
 
+        @CircuitBreaker(name = "api-catalog", fallbackMethod = "fallbackGetCity")
         public CityDTO getCity(String code) {
-
-                System.out.println("calling to api-catalog");
-
-                // HostConfiguration hostConfiguration = configuration.getHosts().get(HOST);
+               // HostConfiguration hostConfiguration = configuration.getHosts().get(HOST);
                 // EndpointConfiguration endpointConfiguration =
                 // hostConfiguration.getEndpoints().get(ENDPOINT);
-
                 HostConfiguration hostConfiguration = configuration.getHosts().get(HOST);
                 if (hostConfiguration == null) {
                         throw new IllegalStateException("No se encontró configuración para el host: " + HOST);
                 }
-
                 if (hostConfiguration.getEndpoint() == null) {
                         throw new IllegalStateException(
                                         "No se encontró configuración de endpoints para el host: " + HOST);
                 }
-
                 EndpointConfiguration endpointConfiguration = hostConfiguration.getEndpoint().get(ENDPOINT);
                 if (endpointConfiguration == null) {
                         throw new IllegalStateException("No se encontró el endpoint: " + ENDPOINT);
                 }
-
                 HttpClient httpClient = HttpClient.create()
                                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                                                 Math.toIntExact(endpointConfiguration.getConnectionTimeout()))
@@ -82,5 +80,21 @@ public class CatalogConnector {
                                 .share()
                                 .block();
         }
+
+        private CityDTO fallbackGetCity(String code, CallNotPermittedException e) {
+                System.out.println("Calling fallbackGetCity -1");
+
+                return new CityDTO();
+        }
+
+        private CityDTO fallbackGetCity(String code, Exception e) {
+                System.out.println("Calling fallbackGetCity -2");
+
+                throw new AndyException(APIError.VALIDATION_ERROR);
+        }
+
+
+
+        
 
 }
